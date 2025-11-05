@@ -1,5 +1,10 @@
+# Dependencies
 node_modules/
-.env
-.vercel
+
+# TypeScript compiled output
 dist/
-*.log
+*.js
+*.js.map
+
+# Environment variables
+.env
