@@ -4,6 +4,12 @@ import { setupHandlers } from '../src/handlers';
 
 const token = process.env.TELEGRAM_BOT_TOKEN!;
 
+// Crie a instância do bot e configure os handlers FORA da função handler.
+// Isso permite que a Vercel reutilize a instância em invocações "quentes" (warm invocations).
+const bot = new TelegramBot(token, { polling: false });
+setupHandlers(bot);
+
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   console.log('🔔 Webhook chamado!', {
     method: req.method,
@@ -25,14 +31,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.log('❌ Método não permitido:', req.method);
       return res.status(405).json({ error: 'Method not allowed' });
     }
-
-    console.log('✅ Token presente:', !!token);
-    
-    // Criar instância do bot (sem polling)
-    const bot = new TelegramBot(token, { polling: false });
-
-    // Configurar handlers
-    setupHandlers(bot);
 
     // Processar update do Telegram
     const update = req.body;
