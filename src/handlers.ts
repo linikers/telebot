@@ -11,7 +11,7 @@ export function setupHandlers(bot: TelegramBot) {
   bot.onText(/\/help/, (msg) => {
     const chatId = msg.chat.id;
     const helpText = `
-📋 *Comandos disponíveis:*
+ *Comandos disponíveis:*
 
 /start - Inicia o bot
 /help - Mostra esta mensagem
