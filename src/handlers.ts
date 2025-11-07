@@ -4,34 +4,27 @@ export function setupHandlers(bot: TelegramBot) {
   // Comando /start
   bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
-    bot.sendMessage(chatId, '👋 Olá! Bem-vindo ao bot. Use /help para ver os comandos.');
+    bot.sendMessage(chatId, '👋 Olá! Eu sou o 7bot e estou pronto para dar as boas-vindas aos novos membros do grupo.');
   });
 
   // Comando /help
   bot.onText(/\/help/, (msg) => {
     const chatId = msg.chat.id;
-    const helpText = `
- *Comandos disponíveis:*
-
-/start - Inicia o bot
-/help - Mostra esta mensagem
-/echo <texto> - Repete o texto enviado
-    `;
+    const helpText = 'Eu envio uma mensagem de boas-vindas sempre que um novo membro entra no grupo.';
     bot.sendMessage(chatId, helpText, { parse_mode: 'Markdown' });
   });
 
-  // Comando /echo
-  bot.onText(/\/echo (.+)/, (msg, match) => {
+  // Listener para novos membros no grupo
+  bot.on('new_chat_members', (msg) => {
     const chatId = msg.chat.id;
-    const text = match?.[1];
-    bot.sendMessage(chatId, text || 'Nenhum texto fornecido');
-  });
+    const newMembers = msg.new_chat_members;
 
-  // Mensagens gerais
-  bot.on('message', (msg) => {
-    if (!msg.text?.startsWith('/')) {
-      const chatId = msg.chat.id;
-      bot.sendMessage(chatId, `Você disse: "${msg.text}"`);
-    }
+    newMembers?.forEach((member) => {
+      // Evita que o próprio bot se dê as boas-vindas
+      if (!member.is_bot) {
+        const welcomeMessage = `✨ É o grupo da sorte! Seja bem-vindo(a), ${member.first_name}! ✨`;
+        bot.sendMessage(chatId, welcomeMessage);
+      }
+    });
   });
 }
