@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@vercel/node": "^5.5.4",
-    "curl": "^0.1.4",
     "dotenv": "^16.4.5",
     "node-telegram-bot-api": "^0.64.0"
   },
